@@ -1,0 +1,15 @@
+{
+    "name": "nim4n/cropper2",
+    "description": "Cropper image for laravel-admin",
+    "type": "extentions",
+    "require": {
+        "encore/laravel-admin": "^1.6"
+    },
+    "license": "MIT Lincense",
+    "authors": [
+        {
+            "name": "nim4n136",
+            "email": "nim4n136@gmail.com"
+        }
+    ]
+}
