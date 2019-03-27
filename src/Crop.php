@@ -14,7 +14,7 @@ class Crop extends File
 
     private $ratioH = 230;
 
-    protected $view = 'laravel-admin-cropper2';
+    protected $view = 'laravel-admin-cropper2::cropper';
 
     protected static $css = [
         '/vendor/laravel-admin-ext/cropper/cropper.min.css',
