@@ -13,8 +13,8 @@ class CropperServiceProvider extends ServiceProvider
      */
     public function boot(Cropper $extension)
     {
-        if (! Cropper::boot()) {
-            return ;
+        if (!Cropper::boot()) {
+            return;
         }
 
         if ($views = $extension->views()) {
@@ -26,7 +26,6 @@ class CropperServiceProvider extends ServiceProvider
                 [$assets => public_path('vendor/cropper2')],
                 'laravel-admin-cropper2'
             );
-
         }
 
         Admin::booting(function () {

@@ -2,9 +2,9 @@
 
 namespace Encore\Cropper2;
 
-use Encore\Admin\Form\Field\ImageField;
-use Encore\Admin\Form\Field\File;
 use Encore\Admin\Admin;
+use Encore\Admin\Form\Field\File;
+use Encore\Admin\Form\Field\ImageField;
 
 class Crop extends File
 {
@@ -22,29 +22,30 @@ class Crop extends File
 
     protected static $js = [
         '/vendor/laravel-admin-ext/cropper/cropper.min.js',
-        '/vendor/laravel-admin-ext/cropper/layer/layer.js'
+        '/vendor/laravel-admin-ext/cropper/layer/layer.js',
     ];
 
-
     /**
-     * [将Base64图片转换为本地图片并保存]
+     * [将Base64图片转换为本地图片并保存].
+     *
      * @E-mial wuliqiang_aa@163.com
      * @TIME   2017-04-07
      * @WEB    http://blog.iinu.com.cn
-     * @param  [Base64] $base64_image_content [要保存的Base64]
-     * @param  [目录] $path [要保存的路径]
+     *
+     * @param [Base64] $base64_image_content [要保存的Base64]
+     * @param [目录] $path                 [要保存的路径]
      */
     private function base64_image_content($base64_image_content, $path)
     {
         //匹配出图片的格式
         if (preg_match('/^(data:\s*image\/(\w+);base64,)/', $base64_image_content, $result)) {
             $type = $result[2];
-            $new_file = $path . "/" . date('Ymd', time()) . "/";
+            $new_file = $path.'/'.date('Ymd', time()).'/';
             if (!file_exists($new_file)) {
                 //检查是否有该文件夹，如果没有就创建，并给予最高权限
                 mkdir($new_file, 0755, true);
             }
-            $new_file = $new_file . md5(microtime()) . ".{$type}";
+            $new_file = $new_file.md5(microtime()).".{$type}";
             if (file_put_contents($new_file, base64_decode(str_replace($result[1], '', $base64_image_content)))) {
                 return $new_file;
             } else {
@@ -57,29 +58,27 @@ class Crop extends File
 
     public function prepare($base64)
     {
-
-        if (preg_match('/data:image\/.*?;base64/is',$base64)) {
-
-            $imagePath = $this->base64_image_content($base64,public_path('uploads/base64img'));
+        if (preg_match('/data:image\/.*?;base64/is', $base64)) {
+            $imagePath = $this->base64_image_content($base64, public_path('uploads/base64img'));
             if ($imagePath !== false) {
-
                 @unlink(public_path('uploads/').$this->original);
 
-                preg_match('/base64img\/.*/is',$imagePath,$matches);
+                preg_match('/base64img\/.*/is', $imagePath, $matches);
 
                 $this->callInterventionMethods($imagePath);
+
                 return $matches[0];
             } else {
                 return 'lost';
             }
         } else {
-            preg_match('/base64img\/.*/is',$base64,$matches);
+            preg_match('/base64img\/.*/is', $base64, $matches);
+
             return isset($matches[0]) ? $matches[0] : $base64;
         }
     }
 
-
-    public function cRatio($width,$height)
+    public function cRatio($width, $height)
     {
         if (!empty($width) and is_numeric($width)) {
             $this->attributes['data-w'] = $width;
@@ -91,6 +90,7 @@ class Crop extends File
         } else {
             $this->attributes['data-h'] = $this->ratioH;
         }
+
         return $this;
     }
 
@@ -184,5 +184,4 @@ EOT;
 
         return view($this->getView(), $this->variables());
     }
-
 }
